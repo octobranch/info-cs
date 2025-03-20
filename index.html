@@ -190,7 +190,7 @@
         // Cargar datos de vuelos
         async function loadFlights() {
             try {
-                const response = await fetch('https://api.aviationstack.com/v1/flights?access_key=TU_API_KEY&dep_iata=CUN&arr_iata=CUN');
+                const response = await fetch('https://api.aviationstack.com/v1/flights?access_key=511fa1baa298b0bd18ac3fbfac5b91c4&dep_iata=CUN&arr_iata=CUN');
                 const data = await response.json();
                 
                 if(!data.data || !Array.isArray(data.data)) {
