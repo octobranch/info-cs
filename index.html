@@ -193,9 +193,12 @@
                 const response = await fetch('https://api.aviationstack.com/v1/flights?access_key=c9df0d00089af5ed5af7685875dff30e&dep_iata=CUN&arr_iata=CUN');
                 const data = await response.json();
                 
+                // Verifica si la respuesta es correcta
                 if(!data.data || !Array.isArray(data.data)) {
                     throw new Error('Estructura de datos incorrecta');
                 }
+
+                console.log(data);  // Para depuración
 
                 const processFlight = (flight, type) => {
                     const scheduledTime = type === 'arrival' 
@@ -228,12 +231,14 @@
                     return card;
                 };
 
+                // Filtra vuelos de llegadas y salidas
                 const arrivals = data.data.filter(f => f.arrival.iata === 'CUN');
                 const departures = data.data.filter(f => f.departure.iata === 'CUN');
 
                 const arrivalsContainer = document.getElementById('arrivals');
                 const departuresContainer = document.getElementById('departures');
 
+                // Muestra error si no hay vuelos
                 arrivalsContainer.innerHTML = arrivals.length > 0 
                     ? '' 
                     : '<div class="error">No hay vuelos próximos</div>';
@@ -242,13 +247,14 @@
                     ? '' 
                     : '<div class="error">No hay vuelos próximos</div>';
 
+                // Agrega los vuelos a las listas
                 arrivals.forEach(f => arrivalsContainer.appendChild(processFlight(f, 'arrival')));
                 departures.forEach(f => departuresContainer.appendChild(processFlight(f, 'departure')));
                 
             } catch (error) {
-                console.error('Error loading flights:', error);
-                document.getElementById('arrivals').innerHTML = '<div class="error">Error cargando vuelos. Actualiza la página.</div>';
-                document.getElementById('departures').innerHTML = '<div class="error">Error cargando vuelos. Actualiza la página.</div>';
+                console.error('Error cargando vuelos:', error);
+                document.getElementById('arrivals').innerHTML = `<div class="error">Error cargando vuelos: ${error.message}</div>`;
+                document.getElementById('departures').innerHTML = `<div class="error">Error cargando vuelos: ${error.message}</div>`;
             }
         }
 
