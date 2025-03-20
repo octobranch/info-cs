@@ -182,7 +182,7 @@
         // Cargar datos de vuelos
         async function loadFlights() {
             try {
-                const response = await fetch('https://api.aviationstack.com/v1/flights?access_key=TU_API_KEY&airport_name=Cancun International Airport');
+                const response = await fetch('https://api.aviationstack.com/v1/flights?access_key=571e08202da9d803e24429f5b203f7b0&airport_name=Cancun International Airport');
                 const data = await response.json();
                 
                 const processFlight = (flight, type) => {
