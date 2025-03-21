@@ -58,77 +58,6 @@
             font-weight: bold;
             font-size: 20px;
         }
-
-        .flight-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .flight-card {
-            display: flex;
-            justify-content: space-between;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 8px;
-            align-items: center;
-        }
-
-        .flight-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flight-number {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .route {
-            font-size: 14px;
-        }
-
-        .time {
-            font-size: 14px;
-            color: #03a9f4;
-        }
-
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .status-on-time {
-            background-color: #4caf50;
-        }
-
-        .status-delayed {
-            background-color: #ff9800;
-        }
-
-        .status-canceled {
-            background-color: #f44336;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .controls button {
-            padding: 10px;
-            background-color: #03a9f4;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .controls button:hover {
-            background-color: #0288d1;
-        }
     </style>
 </head>
 <body>
@@ -152,140 +81,28 @@
                 <span id="Cancun" class="time"></span>
             </div>
         </div>
-
-        <div class="panel">
-            <h1>Aeropuerto de Cancún (CUN)</h1>
-            <div class="controls">
-                <button onclick="FlightManager.fetchRealFlights()">Obtener Vuelos Reales</button>
-                <button onclick="FlightManager.clearFlights()">Limpiar</button>
-            </div>
-            <div class="flights-container">
-                <div class="flight-section">
-                    <h2>🛬 Llegadas</h2>
-                    <div class="flight-list" id="arrivals"></div>
-                </div>
-                <div class="flight-section">
-                    <h2>🛫 Salidas</h2>
-                    <div class="flight-list" id="departures"></div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
-        const API_KEY = '57aace98567be4f24ac10edd56776d28'; // Reemplaza esto con tu clave de API
+        // Código JavaScript para actualizar la hora
+        const timeElements = document.querySelectorAll('.time');
+        const locations = ['San-Jose-del-Cabo', 'Puerto-Vallarta', 'Punta-Cana', 'Cancun'];
 
-        class FlightManager {
-            static flights = JSON.parse(localStorage.getItem('flights')) || [];
-
-            // Obtener vuelos reales desde AviationStack
-            static fetchRealFlights() {
-                const url = `https://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=CUN`;
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.data) {
-                            this.saveFlights(data.data);
-                            this.updateDisplay();
-                        } else {
-                            console.error('No se encontraron vuelos o error en la API');
-                        }
-                    })
-                    .catch(error => console.error('Error al obtener vuelos:', error));
-            }
-
-            // Guardar vuelos en LocalStorage
-            static saveFlights(flights) {
-                this.flights = flights;
-                localStorage.setItem('flights', JSON.stringify(flights));
-            }
-
-            static clearFlights() {
-                this.saveFlights([]);
-                this.updateDisplay();
-            }
-
-            // Actualizar la interfaz
-            static updateDisplay() {
-                const arrivals = document.getElementById('arrivals');
-                const departures = document.getElementById('departures');
-
-                arrivals.innerHTML = '';
-                departures.innerHTML = '';
-
-                this.flights.forEach(flight => {
-                    const isArrival = flight.arrival && flight.arrival.iata;
-                    const isDeparture = flight.departure && flight.departure.iata;
-
-                    // Verificación de que tenga datos completos de vuelo
-                    if (flight.flight && flight.flight.iata && (isArrival || isDeparture)) {
-                        const departureTime = flight.departure ? flight.departure.estimatedArrival : null;
-                        const arrivalTime = flight.arrival ? flight.arrival.estimatedArrival : null;
-
-                        // Verificación de que las horas de llegada o salida no estén vacías
-                        if (departureTime || arrivalTime) {
-                            const card = document.createElement('div');
-                            card.className = 'flight-card';
-                            card.innerHTML = `
-                                <div class="flight-info">
-                                    <div class="flight-number">${flight.flight.iata || 'Desconocido'}</div>
-                                    <div class="route">
-                                        ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
-                                    </div>
-                                    <div class="time">${departureTime || arrivalTime || 'Hora desconocida'}</div>
-                                </div>
-                                <div class="flight-status">
-                                    <div class="status-indicator status-${flight.flight_status || 'unknown'}"></div>
-                                </div>
-                            `;
-
-                            if (isDeparture) {
-                                departures.appendChild(card);
-                            } else if (isArrival) {
-                                arrivals.appendChild(card);
-                            }
-                        } else {
-                            console.warn('Vuelo sin hora de llegada o salida:', flight);
-                        }
-                    } else {
-                        console.warn('Vuelo con datos incompletos o inválidos:', flight);
-                    }
-                });
-            }
+        function updateTime() {
+            locations.forEach(location => {
+                const timeElement = document.getElementById(location);
+                const date = new Date();
+                const options = { timeZone: location, hour: 'numeric', minute: 'numeric' };
+                const formattedTime = date.toLocaleTimeString('es-MX', options);
+                timeElement.textContent = formattedTime;
+            });
         }
 
-        class TimeManager {
-            static timeZones = {
-                'San-Jose-del-Cabo': 'America/Mazatlan',
-                'Puerto-Vallarta': 'America/Mexico_City',
-                'Punta-Cana': 'America/Santo_Domingo',
-                'Cancun': 'America/Cancun'
-            };
+        // Actualiza la hora cada segundo
+        setInterval(updateTime, 1000);
 
-            static update() {
-                Object.entries(this.timeZones).forEach(([id, zone]) => {
-                    const time = new Date().toLocaleTimeString('es-MX', {
-                        timeZone: zone,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                    document.getElementById(id).textContent = time;
-                });
-            }
-        }
-
-        setInterval(() => TimeManager.update(), 1000);
-        TimeManager.update();
-        FlightManager.updateDisplay();
-
-        // Carga inicial de datos
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('flights')) {
-                FlightManager.fetchRealFlights();
-            }
-        });
+        // Llama a updateTime para mostrar la hora inicial
+        updateTime();
     </script>
 </body>
 </html>
