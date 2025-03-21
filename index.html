@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos previos no se modifican */
         :root {
             --primary-color: #00bcd4;
             --secondary-color: #4caf50;
@@ -155,7 +154,6 @@
             background: #333;
         }
 
-        /* Animation for smooth transitions */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -167,7 +165,6 @@
             }
         }
 
-        /* Mobile responsive layout */
         @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
@@ -227,7 +224,7 @@
 
             // Obtener vuelos reales desde AviationStack
             static fetchRealFlights() {
-                const url = `http://api.aviationstack.com/v1/flights?access_key=57aace98567be4f24ac10edd56776d28&dep_iata=CUN`;
+                const url = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=CUN`;
                 
                 fetch(url)
                     .then(response => response.json())
@@ -262,24 +259,35 @@
                 departures.innerHTML = '';
 
                 this.flights.forEach(flight => {
+                    // Asegurarse de que los datos existen
+                    const isArrival = flight.arrival && flight.arrival.iata;
+                    const isDeparture = flight.departure && flight.departure.iata;
+
+                    if (!isArrival && !isDeparture) {
+                        console.warn(`Vuelo con datos incompletos: ${flight.flight.iata}`);
+                        return;
+                    }
+
                     const card = document.createElement('div');
                     card.className = 'flight-card';
                     card.innerHTML = `
                         <div class="flight-info">
                             <div class="flight-number">${flight.flight.iata}</div>
                             <div class="route">
-                                ${flight.departure.iata ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
+                                ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
                             </div>
-                            <div class="time">${flight.departureestimated ? flight.departureestimated : flight.arrivalestimated}</div>
+                            <div class="time">${flight.departureestimated || flight.arrivalestimated}</div>
                         </div>
                         <div class="flight-status">
                             <div class="status-indicator status-${flight.flight_status}"></div>
                         </div>
                     `;
-                    
-                    flight.departure.iata ? 
-                        arrivals.appendChild(card) : 
+
+                    if (isDeparture) {
                         departures.appendChild(card);
+                    } else if (isArrival) {
+                        arrivals.appendChild(card);
+                    }
                 });
             }
         }
@@ -305,14 +313,13 @@
             }
         }
 
-        // Inicialización
         setInterval(() => TimeManager.update(), 1000);
         TimeManager.update();
         FlightManager.updateDisplay();
 
         // Carga inicial de datos
         window.addEventListener('DOMContentLoaded', () => {
-            if(!localStorage.getItem('flights')) {
+            if (!localStorage.getItem('flights')) {
                 FlightManager.fetchRealFlights();
             }
         });
