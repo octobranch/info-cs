@@ -3,326 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Customer Service</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Información de Vuelos</title>
     <style>
-        :root {
-            --primary-color: #00bcd4;
-            --secondary-color: #4caf50;
-            --background-color: #121212;
-            --text-color: #e0e0e0;
-            --card-bg: #1f1f1f;
-            --highlight-color: #ff4081;
-            --border-radius: 12px;
-        }
-
+        /* Estilos básicos para la visualización de los vuelos */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
             margin: 0;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            display: flex;
-            justify-content: space-between;
-            gap: 2rem;
+        .flight-item {
+            background-color: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
         }
-
-        .panel {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        #real-flights-container {
+            margin-top: 20px;
         }
-
-        h1, h2 {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .time-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            margin: 1rem 0;
-            background: #2c2c2c;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-        }
-
-        .flights-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .flight-section {
-            width: 48%;
-        }
-
-        .flight-card {
-            background: var(--background-color);
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: var(--border-radius);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .flight-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .flight-status {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
         button {
-            padding: 0.5rem 1.5rem;
-            background: var(--primary-color);
+            background-color: #28a745;
             color: white;
+            padding: 10px 20px;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
+            font-size: 16px;
+            border-radius: 5px;
         }
-
         button:hover {
-            background: var(--highlight-color);
-        }
-
-        .flight-number {
-            font-weight: 600;
-        }
-
-        .route {
-            font-size: 0.9rem;
-            color: #b0b0b0;
-        }
-
-        .time {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .highlight {
-            background: var(--secondary-color);
-        }
-
-        .time-zone {
-            font-weight: 500;
-        }
-
-        .dark-mode {
-            background-color: #000;
-            color: #fff;
-        }
-
-        .dark-mode button {
-            background: #333;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @media (max-width: 1200px) {
-            .container {
-                flex-direction: column;
-            }
-            .flights-container {
-                flex-direction: column;
-            }
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="panel">
-            <h1>Horarios Operacíon</h1>
-            <div class="time-box">
-                <span>🇲🇽 San José del Cabo</span>
-                <span id="San-Jose-del-Cabo" class="time"></span>
-            </div>
-            <div class="time-box">
-                <span>🇲🇽 Puerto Vallarta</span>
-                <span id="Puerto-Vallarta" class="time"></span>
-            </div>
-            <div class="time-box">
-                <span>🇩🇴 Punta Cana</span>
-                <span id="Punta-Cana" class="time"></span>
-            </div>
-            <div class="time-box highlight">
-                <span>🇲🇽 Cancún (CUN)</span>
-                <span id="Cancun" class="time"></span>
-            </div>
-        </div>
 
-        <div class="panel">
-            <h1>Aeropuerto de Cancún (CUN)</h1>
-            <div class="controls">
-                <button onclick="FlightManager.fetchRealFlights()">Obtener Vuelos Reales</button>
-                <button onclick="FlightManager.clearFlights()">Limpiar</button>
-            </div>
-            <div class="flights-container">
-                <div class="flight-section">
-                    <h2>🛬 Llegadas</h2>
-                    <div class="flight-list" id="arrivals"></div>
-                </div>
-                <div class="flight-section">
-                    <h2>🛫 Salidas</h2>
-                    <div class="flight-list" id="departures"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1>Vuelos en el Aeropuerto de Cancún</h1>
+    <button id="fetch-real-flights">Obtener vuelos reales</button>
+
+    <div id="real-flights-container"></div>
 
     <script>
-        const API_KEY = '57aace98567be4f24ac10edd56776d28'; // Reemplaza esto con tu clave de API
-
+        // Clase para gestionar los vuelos
         class FlightManager {
-            static flights = JSON.parse(localStorage.getItem('flights')) || [];
+            static flights = [];
 
-            // Obtener vuelos reales desde AviationStack
+            // Obtener vuelos reales
             static fetchRealFlights() {
-                const url = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=CUN`;
-                
+                const url = `https://api.aviationstack.com/v1/flights?access_key=57aace98567be4f24ac10edd56776d28&dep_iata=CUN`; // Usando HTTPS
+
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                        if (data && data.data) {
+                        console.log(data); // Verificar los datos recibidos
+                        if (data && data.data && Array.isArray(data.data)) {
                             this.saveFlights(data.data);
                             this.updateDisplay();
                         } else {
                             console.error('No se encontraron vuelos o error en la API');
                         }
                     })
-                    .catch(error => console.error('Error al obtener vuelos:', error));
+                    .catch(error => {
+                        console.error('Error al obtener vuelos:', error);
+                    });
             }
 
-            // Guardar vuelos en LocalStorage
-            static saveFlights(flights) {
-                this.flights = flights;
-                localStorage.setItem('flights', JSON.stringify(flights));
+            // Guardar vuelos obtenidos
+            static saveFlights(flightsData) {
+                this.flights = flightsData.map(flight => ({
+                    iata: flight.iata || 'Desconocido',  // Verificación de 'iata'
+                    destination: flight.destination || 'Desconocido',  // Verificación de destino
+                    departure: flight.departure ? new Date(flight.departure).toLocaleTimeString() : 'Desconocido',  // Formato de hora
+                }));
             }
 
-            static clearFlights() {
-                this.saveFlights([]);
-                this.updateDisplay();
-            }
-
-            // Actualizar la interfaz
+            // Actualizar la interfaz con los vuelos
             static updateDisplay() {
-                const arrivals = document.getElementById('arrivals');
-                const departures = document.getElementById('departures');
-                
-                arrivals.innerHTML = '';
-                departures.innerHTML = '';
+                const flightsContainer = document.getElementById("real-flights-container");
+                flightsContainer.innerHTML = '';  // Limpiar contenido anterior
 
                 this.flights.forEach(flight => {
-                    // Asegurarse de que los datos existen
-                    const isArrival = flight.arrival && flight.arrival.iata;
-                    const isDeparture = flight.departure && flight.departure.iata;
-
-                    if (!isArrival && !isDeparture) {
-                        console.warn(`Vuelo con datos incompletos: ${flight.flight.iata}`);
-                        return;
-                    }
-
-                    const card = document.createElement('div');
-                    card.className = 'flight-card';
-                    card.innerHTML = `
-                        <div class="flight-info">
-                            <div class="flight-number">${flight.flight.iata}</div>
-                            <div class="route">
-                                ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
-                            </div>
-                            <div class="time">${flight.departureestimated || flight.arrivalestimated}</div>
-                        </div>
-                        <div class="flight-status">
-                            <div class="status-indicator status-${flight.flight_status}"></div>
-                        </div>
-                    `;
-
-                    if (isDeparture) {
-                        departures.appendChild(card);
-                    } else if (isArrival) {
-                        arrivals.appendChild(card);
+                    if (flight && flight.iata) {  // Asegurarnos de que 'iata' esté presente
+                        const flightElement = document.createElement('div');
+                        flightElement.classList.add('flight-item');
+                        flightElement.innerHTML = `
+                            <p><strong>Vuelo:</strong> ${flight.iata}</p>
+                            <p><strong>Destino:</strong> ${flight.destination}</p>
+                            <p><strong>Hora:</strong> ${flight.departure}</p>
+                        `;
+                        flightsContainer.appendChild(flightElement);
                     }
                 });
             }
         }
 
-        class TimeManager {
-            static timeZones = {
-                'San-Jose-del-Cabo': 'America/Mazatlan',
-                'Puerto-Vallarta': 'America/Mexico_City',
-                'Punta-Cana': 'America/Santo_Domingo',
-                'Cancun': 'America/Cancun'
-            };
-
-            static update() {
-                Object.entries(this.timeZones).forEach(([id, zone]) => {
-                    const time = new Date().toLocaleTimeString('es-MX', {
-                        timeZone: zone,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                    document.getElementById(id).textContent = time;
-                });
-            }
-        }
-
-        setInterval(() => TimeManager.update(), 1000);
-        TimeManager.update();
-        FlightManager.updateDisplay();
-
-        // Carga inicial de datos
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('flights')) {
-                FlightManager.fetchRealFlights();
-            }
+        // Llamada para obtener vuelos reales
+        document.getElementById('fetch-real-flights').addEventListener('click', () => {
+            FlightManager.fetchRealFlights();
         });
     </script>
+
 </body>
 </html>
