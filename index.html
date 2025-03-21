@@ -225,7 +225,7 @@
             // Obtener vuelos reales desde AviationStack
             static fetchRealFlights() {
                 const url = `https://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=CUN`;
-                
+
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
@@ -254,7 +254,7 @@
             static updateDisplay() {
                 const arrivals = document.getElementById('arrivals');
                 const departures = document.getElementById('departures');
-                
+
                 arrivals.innerHTML = '';
                 departures.innerHTML = '';
 
@@ -263,30 +263,30 @@
                     const isArrival = flight.arrival && flight.arrival.iata;
                     const isDeparture = flight.departure && flight.departure.iata;
 
-                    if (!isArrival && !isDeparture) {
-                        console.warn(`Vuelo con datos incompletos: ${flight.flight.iata}`);
-                        return; // Ignora vuelos con datos incompletos
-                    }
-
-                    const card = document.createElement('div');
-                    card.className = 'flight-card';
-                    card.innerHTML = `
-                        <div class="flight-info">
-                            <div class="flight-number">${flight.flight.iata || 'Desconocido'}</div>
-                            <div class="route">
-                                ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
+                    // Verificar que haya información válida de vuelo
+                    if (flight.flight && flight.flight.iata && (isArrival || isDeparture)) {
+                        const card = document.createElement('div');
+                        card.className = 'flight-card';
+                        card.innerHTML = `
+                            <div class="flight-info">
+                                <div class="flight-number">${flight.flight.iata || 'Desconocido'}</div>
+                                <div class="route">
+                                    ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
+                                </div>
+                                <div class="time">${flight.departureestimated || flight.arrivalestimated || 'Hora desconocida'}</div>
                             </div>
-                            <div class="time">${flight.departureestimated || flight.arrivalestimated || 'Hora desconocida'}</div>
-                        </div>
-                        <div class="flight-status">
-                            <div class="status-indicator status-${flight.flight_status}"></div>
-                        </div>
-                    `;
+                            <div class="flight-status">
+                                <div class="status-indicator status-${flight.flight_status || 'unknown'}"></div>
+                            </div>
+                        `;
 
-                    if (isDeparture) {
-                        departures.appendChild(card);
-                    } else if (isArrival) {
-                        arrivals.appendChild(card);
+                        if (isDeparture) {
+                            departures.appendChild(card);
+                        } else if (isArrival) {
+                            arrivals.appendChild(card);
+                        }
+                    } else {
+                        console.warn('Vuelo con datos incompletos o inválidos:', flight);
                     }
                 });
             }
