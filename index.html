@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Estilos previos no se modifican */
         :root {
             --primary-color: #00bcd4;
             --secondary-color: #4caf50;
@@ -202,7 +203,7 @@
         <div class="panel">
             <h1>Aeropuerto de Cancún (CUN)</h1>
             <div class="controls">
-                <button onclick="FlightManager.simulateFlights()">Simular Vuelos</button>
+                <button onclick="FlightManager.fetchRealFlights()">Obtener Vuelos Reales</button>
                 <button onclick="FlightManager.clearFlights()">Limpiar</button>
             </div>
             <div class="flights-container">
@@ -219,35 +220,29 @@
     </div>
 
     <script>
+        const API_KEY = '57aace98567be4f24ac10edd56776d28'; // Reemplaza esto con tu clave de API
+
         class FlightManager {
             static flights = JSON.parse(localStorage.getItem('flights')) || [];
-            
-            static generateFlight(type) {
-                const airports = ['MEX', 'JFK', 'MAD', 'LAX', 'BOG'];
-                const airlineCodes = ['AM', 'DL', 'IB', 'AA', 'AV'];
-                const randomCode = airlineCodes[Math.floor(Math.random() * airlineCodes.length)];
+
+            // Obtener vuelos reales desde AviationStack
+            static fetchRealFlights() {
+                const url = `http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=CUN`;
                 
-                return {
-                    id: Date.now(),
-                    type,
-                    number: `${randomCode}${Math.floor(100 + Math.random() * 900)}`,
-                    time: new Date(Date.now() + Math.random() * 86400000).toLocaleTimeString('es-MX', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }),
-                    origin: type === 'arrival' ? airports[Math.floor(Math.random() * airports.length)] : 'CUN',
-                    destination: type === 'departure' ? airports[Math.floor(Math.random() * airports.length)] : 'CUN',
-                    status: ['ontime', 'delayed', 'arrived'][Math.floor(Math.random() * 3)]
-                };
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.data) {
+                            this.saveFlights(data.data);
+                            this.updateDisplay();
+                        } else {
+                            console.error('No se encontraron vuelos o error en la API');
+                        }
+                    })
+                    .catch(error => console.error('Error al obtener vuelos:', error));
             }
 
-            static simulateFlights() {
-                const flights = Array.from({length: 5}, () => this.generateFlight('arrival'))
-                             .concat(Array.from({length: 5}, () => this.generateFlight('departure')));
-                this.saveFlights(flights);
-                this.updateDisplay();
-            }
-
+            // Guardar vuelos en LocalStorage
             static saveFlights(flights) {
                 this.flights = flights;
                 localStorage.setItem('flights', JSON.stringify(flights));
@@ -258,6 +253,7 @@
                 this.updateDisplay();
             }
 
+            // Actualizar la interfaz
             static updateDisplay() {
                 const arrivals = document.getElementById('arrivals');
                 const departures = document.getElementById('departures');
@@ -270,20 +266,18 @@
                     card.className = 'flight-card';
                     card.innerHTML = `
                         <div class="flight-info">
-                            <div class="flight-number">${flight.number}</div>
+                            <div class="flight-number">${flight.flight.iata}</div>
                             <div class="route">
-                                ${flight.type === 'arrival' ? 
-                                    `${flight.origin} → CUN` : 
-                                    `CUN → ${flight.destination}`}
+                                ${flight.departure.iata ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
                             </div>
-                            <div class="time">${flight.time}</div>
+                            <div class="time">${flight.departureestimated ? flight.departureestimated : flight.arrivalestimated}</div>
                         </div>
                         <div class="flight-status">
-                            <div class="status-indicator status-${flight.status}"></div>
+                            <div class="status-indicator status-${flight.flight_status}"></div>
                         </div>
                     `;
                     
-                    flight.type === 'arrival' ? 
+                    flight.departure.iata ? 
                         arrivals.appendChild(card) : 
                         departures.appendChild(card);
                 });
@@ -319,7 +313,7 @@
         // Carga inicial de datos
         window.addEventListener('DOMContentLoaded', () => {
             if(!localStorage.getItem('flights')) {
-                FlightManager.simulateFlights();
+                FlightManager.fetchRealFlights();
             }
         });
     </script>
