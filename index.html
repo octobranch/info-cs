@@ -259,7 +259,6 @@
                 departures.innerHTML = '';
 
                 this.flights.forEach(flight => {
-                    // Verifica si los datos son válidos
                     const isArrival = flight.arrival && flight.arrival.iata;
                     const isDeparture = flight.departure && flight.departure.iata;
 
