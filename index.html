@@ -181,19 +181,19 @@
             <h1>Horarios Operacíon</h1>
             <div class="time-box">
                 <span>🇲🇽 San José del Cabo</span>
-                <span id="San-Jose-del-Cabo" class="time">13:45</span>
+                <span id="San-Jose-del-Cabo" class="time"></span>
             </div>
             <div class="time-box">
                 <span>🇲🇽 Puerto Vallarta</span>
-                <span id="Puerto-Vallarta" class="time">14:30</span>
+                <span id="Puerto-Vallarta" class="time"></span>
             </div>
             <div class="time-box">
                 <span>🇩🇴 Punta Cana</span>
-                <span id="Punta-Cana" class="time">13:00</span>
+                <span id="Punta-Cana" class="time"></span>
             </div>
             <div class="time-box highlight">
                 <span>🇲🇽 Cancún (CUN)</span>
-                <span id="Cancun" class="time">13:30</span>
+                <span id="Cancun" class="time"></span>
             </div>
         </div>
 
@@ -259,24 +259,24 @@
                 departures.innerHTML = '';
 
                 this.flights.forEach(flight => {
-                    // Asegurarse de que los datos existen
+                    // Verifica si los datos son válidos
                     const isArrival = flight.arrival && flight.arrival.iata;
                     const isDeparture = flight.departure && flight.departure.iata;
 
                     if (!isArrival && !isDeparture) {
                         console.warn(`Vuelo con datos incompletos: ${flight.flight.iata}`);
-                        return;
+                        return; // Ignora vuelos con datos incompletos
                     }
 
                     const card = document.createElement('div');
                     card.className = 'flight-card';
                     card.innerHTML = `
                         <div class="flight-info">
-                            <div class="flight-number">${flight.flight.iata}</div>
+                            <div class="flight-number">${flight.flight.iata || 'Desconocido'}</div>
                             <div class="route">
                                 ${isDeparture ? `${flight.departure.iata} → CUN` : `CUN → ${flight.arrival.iata}`}
                             </div>
-                            <div class="time">${flight.departureestimated || flight.arrivalestimated}</div>
+                            <div class="time">${flight.departureestimated || flight.arrivalestimated || 'Hora desconocida'}</div>
                         </div>
                         <div class="flight-status">
                             <div class="status-indicator status-${flight.flight_status}"></div>
