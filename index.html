@@ -1,117 +1,66 @@
 <!DOCTYPE html>
-<html lang="es" data-aos-easing="ease-out-quart" data-aos-duration="1200">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Quantum Time Interface</title>
-    
-    <!-- Fuentes y Preconexiones -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://widget.time.is">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Poppins:wght@300;600;900&display=swap" rel="stylesheet">
-    
-    <!-- Hojas de Estilo -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;900&display=swap" rel="stylesheet">
+    <script src="//widget.time.is/es.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Efectos de Fondo -->
-    <div class="matrix-fall"></div>
     <div class="quantum-particles"></div>
-
-    <!-- Contenido Principal -->
+    <div class="interactive-cursor"></div>
+    
     <div class="container">
-        <h1 data-aos="hologram-float" data-text="Horarios de Operación">Horarios de Operación</h1>
-        
+        <h1>Horarios de Operacíon</h1>
         <div class="panel">
             <!-- San José del Cabo -->
-            <div class="time-box" id="San_Jose_del_Cabo_time" data-aos="quantum-enter" data-country="mx">
-                <div class="hologram-wrapper">
-                    <div class="flag" data-country="mx">⚡</div>
-                    <h2 class="city-name">San José del Cabo</h2>
-                    <div class="time-code">
-                        <a href="https://time.is/San_José_del_Cabo" 
-                           class="airport-code" 
-                           data-hover-sound>SJD</a>
-                    </div>
-                    <div class="temporal-display">
-                        <span class="time-glitch">00:00</span>
-                        <span class="date-hologram">Cargando...</span>
-                    </div>
-                </div>
-                <div class="quantum-glow"></div>
+            <div class="time-box" id="San-Jose-del-Cabo">
+                <div class="flag">🇲🇽</div>
+                <h2>San José del Cabo</h2>
+                <a href="https://time.is/San_José_del_Cabo" rel="nofollow">SJD</a>
+                <span id="time_San_Jose_del_Cabo" class="time">00:00</span>
             </div>
 
             <!-- Puerto Vallarta -->
-            <div class="time-box" id="Puerto_Vallarta_time" data-aos="quantum-enter" data-country="mx">
-                <div class="hologram-wrapper">
-                    <div class="flag" data-country="mx">⚡</div>
-                    <h2 class="city-name">Puerto Vallarta</h2>
-                    <div class="time-code">
-                        <a href="https://time.is/Puerto_Vallarta" 
-                           class="airport-code" 
-                           data-hover-sound>PVR</a>
-                    </div>
-                    <div class="temporal-display">
-                        <span class="time-glitch">00:00</span>
-                        <span class="date-hologram">Cargando...</span>
-                    </div>
-                </div>
-                <div class="quantum-glow"></div>
+            <div class="time-box" id="Puerto-Vallarta">
+                <div class="flag">🇲🇽</div>
+                <h2>Puerto Vallarta</h2>
+                <a href="https://time.is/Puerto_Vallarta" rel="nofollow">PVR</a>
+                <span id="time_Puerto_Vallarta" class="time">00:00</span>
             </div>
 
             <!-- Punta Cana -->
-            <div class="time-box" id="Punta_Cana_time" data-aos="quantum-enter" data-country="do">
-                <div class="hologram-wrapper">
-                    <div class="flag" data-country="do">⚡</div>
-                    <h2 class="city-name">Punta Cana</h2>
-                    <div class="time-code">
-                        <a href="https://time.is/Punta_Cana" 
-                           class="airport-code" 
-                           data-hover-sound>PUJ</a>
-                    </div>
-                    <div class="temporal-display">
-                        <span class="time-glitch">00:00</span>
-                        <span class="date-hologram">Cargando...</span>
-                    </div>
-                </div>
-                <div class="quantum-glow"></div>
+            <div class="time-box" id="Punta-Cana">
+                <div class="flag">🇩🇴</div>
+                <h2>Punta Cana</h2>
+                <a href="https://time.is/Punta_Cana" rel="nofollow">PUJ</a>
+                <span id="time_Punta_Cana" class="time">00:00</span>
             </div>
 
             <!-- Cancún -->
-            <div class="time-box" id="Cancun_time" data-aos="quantum-enter" data-country="mx">
-                <div class="hologram-wrapper">
-                    <div class="flag" data-country="mx">⚡</div>
-                    <h2 class="city-name">Cancún</h2>
-                    <div class="time-code">
-                        <a href="https://time.is/Cancún" 
-                           class="airport-code" 
-                           data-hover-sound>CUN</a>
-                    </div>
-                    <div class="temporal-display">
-                        <span class="time-glitch">00:00</span>
-                        <span class="date-hologram">Cargando...</span>
-                    </div>
-                </div>
-                <div class="quantum-glow"></div>
+            <div class="time-box" id="Cancun">
+                <div class="flag">🇲🇽</div>
+                <h2>Cancún</h2>
+                <a href="https://time.is/Cancún" rel="nofollow">CUN</a>
+                <span id="time_Cancun" class="time">00:00</span>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    AOS.init({
+        duration: 1200,
+        once: true,
+        mirror: false
+    });
+</script>
     <script type="module" src="tu-script-mejorado.js"></script>
-    
-    <!-- Inicialización de Animaciones -->
-    <script>
-        AOS.init({
-            duration: 1200,
-            once: true,
-            mirror: false,
-            disable: window.innerWidth < 768,
-            startEvent: 'DOMContentLoaded'
-        });
-    </script>
 </body>
 </html>
