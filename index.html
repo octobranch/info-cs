@@ -123,11 +123,6 @@
             letter-spacing: 1px;
         }
 
-        .time-box .sun-info {
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
         /* Colores específicos por zona */
         #San-Jose-del-Cabo {
             background: linear-gradient(90deg, #f44336, #ff9800);
@@ -163,8 +158,7 @@
                 <div class="flag">🇲🇽</div>
                 <h2>San José del Cabo</h2>
                 <a href="https://time.is/San_José_del_Cabo" rel="nofollow" onclick="playClickSound('sound1')">SJD</a>
-                <span id="time_San_Jose_del_Cabo" class="time"></span>
-                <div class="sun-info" id="sun-San-Jose-del-Cabo"></div>
+                <span id="time_San_Jose_del_Cabo" class="time">00:00</span>
             </div>
 
             <!-- Puerto Vallarta -->
@@ -172,8 +166,7 @@
                 <div class="flag">🇲🇽</div>
                 <h2>Puerto Vallarta</h2>
                 <a href="https://time.is/Puerto_Vallarta" rel="nofollow" onclick="playClickSound('sound2')">PVR</a>
-                <span id="time_Puerto_Vallarta" class="time"></span>
-                <div class="sun-info" id="sun-Puerto-Vallarta"></div>
+                <span id="time_Puerto_Vallarta" class="time">00:00</span>
             </div>
 
             <!-- Punta Cana -->
@@ -181,8 +174,7 @@
                 <div class="flag">🇩🇴</div>
                 <h2>Punta Cana</h2>
                 <a href="https://time.is/Punta_Cana" rel="nofollow" onclick="playClickSound('sound3')">PUJ</a>
-                <span id="time_Punta_Cana" class="time"></span>
-                <div class="sun-info" id="sun-Punta-Cana"></div>
+                <span id="time_Punta_Cana" class="time">00:00</span>
             </div>
 
             <!-- Cancún -->
@@ -190,8 +182,7 @@
                 <div class="flag">🇲🇽</div>
                 <h2>Cancún</h2>
                 <a href="https://time.is/Cancún" rel="nofollow" onclick="playClickSound('sound4')">CUN</a>
-                <span id="time_Cancun" class="time"></span>
-                <div class="sun-info" id="sun-Cancun"></div>
+                <span id="time_Cancun" class="time">00:00</span>
             </div>
         </div>
     </div>
@@ -226,34 +217,30 @@
         time_is_widget.init({
             time_San_Jose_del_Cabo: {
                 id: "San_José_del_Cabo_z155",
-                template: "TIME<br>DATE<br>SUN",
+                template: "TIME<br>DATE",
                 time_format: "hours:minutes",
                 date_format: "dayname daynum/monthnum/yy",
-                sun_format: "Salida del Sol: srhour:srminute Puesta del Sol: sshour:ssminute<br>Duración del Día: dlhoursh dlminutesm",
                 coords: "23.0540600,-109.7036700"
             },
             time_Puerto_Vallarta: {
                 id: "Puerto_Vallarta_z159",
-                template: "TIME<br>DATE<br>SUN",
+                template: "TIME<br>DATE",
                 time_format: "hours:minutes",
                 date_format: "dayname daynum/monthnum/yy",
-                sun_format: "Salida del Sol: srhour:srminute Puesta del Sol: sshour:ssminute<br>Duración del Día: dlhoursh dlminutesm",
                 coords: "20.6170000,-105.2301800"
             },
             time_Punta_Cana: {
                 id: "Punta_Cana_z17a",
-                template: "TIME<br>DATE<br>SUN",
+                template: "TIME<br>DATE",
                 time_format: "hours:minutes",
                 date_format: "dayname daynum/monthnum/yy",
-                sun_format: "Salida del Sol: srhour:srminute Puesta del Sol: sshour:ssminute<br>Duración del Día: dlhoursh dlminutesm",
                 coords: "18.5818200,-68.4043100"
             },
             time_Cancun: {
                 id: "Cancún_z11f",
-                template: "TIME<br>DATE<br>SUN",
+                template: "TIME<br>DATE",
                 time_format: "hours:minutes",
                 date_format: "dayname daynum/monthnum/yy",
-                sun_format: "Salida del Sol: srhour:srminute Puesta del Sol: sshour:ssminute<br>Duración del Día: dlhoursh dlminutesm",
                 coords: "21.1742900,-86.8465600"
             }
         });
