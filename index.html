@@ -159,7 +159,7 @@
         <h1 class="animate__animated animate__fadeInUp">Horarios Operación</h1>
         <div class="panel">
             <!-- San José del Cabo -->
-            <div class="time-box" id="San-Jose-del-Cabo" onmouseover="playHoverSound('soundHover1')" onclick="playClickSound('sound1')">
+            <div class="time-box" id="San-Jose-del-Cabo" onmouseover="playHoverSound()" onclick="playClickSound('sound1')">
                 <div class="flag">🇲🇽</div>
                 <h2>San José del Cabo</h2>
                 <a href="https://time.is/San_José_del_Cabo" rel="nofollow" onclick="playClickSound('sound1')">SJD</a>
@@ -168,7 +168,7 @@
             </div>
 
             <!-- Puerto Vallarta -->
-            <div class="time-box" id="Puerto-Vallarta" onmouseover="playHoverSound('soundHover2')" onclick="playClickSound('sound2')">
+            <div class="time-box" id="Puerto-Vallarta" onmouseover="playHoverSound()" onclick="playClickSound('sound2')">
                 <div class="flag">🇲🇽</div>
                 <h2>Puerto Vallarta</h2>
                 <a href="https://time.is/Puerto_Vallarta" rel="nofollow" onclick="playClickSound('sound2')">PVR</a>
@@ -177,7 +177,7 @@
             </div>
 
             <!-- Punta Cana -->
-            <div class="time-box" id="Punta-Cana" onmouseover="playHoverSound('soundHover3')" onclick="playClickSound('sound3')">
+            <div class="time-box" id="Punta-Cana" onmouseover="playHoverSound()" onclick="playClickSound('sound3')">
                 <div class="flag">🇩🇴</div>
                 <h2>Punta Cana</h2>
                 <a href="https://time.is/Punta_Cana" rel="nofollow" onclick="playClickSound('sound3')">PUJ</a>
@@ -186,7 +186,7 @@
             </div>
 
             <!-- Cancún -->
-            <div class="time-box" id="Cancun" onmouseover="playHoverSound('soundHover4')" onclick="playClickSound('sound4')">
+            <div class="time-box" id="Cancun" onmouseover="playHoverSound()" onclick="playClickSound('sound4')">
                 <div class="flag">🇲🇽</div>
                 <h2>Cancún</h2>
                 <a href="https://time.is/Cancún" rel="nofollow" onclick="playClickSound('sound4')">CUN</a>
@@ -199,36 +199,27 @@
     <script src="//widget.time.is/es.js"></script>
     <script>
         // Sounds
-        var audio1 = new Audio('https://www.soundjay.com/button/beep-07.wav');
-        var audio2 = new Audio('https://www.soundjay.com/button/beep-08b.wav');
-        var audio3 = new Audio('https://www.soundjay.com/button/beep-10.wav');
-        var audio4 = new Audio('https://www.soundjay.com/button/beep-09.wav');
-        var hoverAudio1 = new Audio('https://www.soundjay.com/button/beep-01a.wav');
-        var hoverAudio2 = new Audio('https://www.soundjay.com/button/beep-01b.wav');
-        var hoverAudio3 = new Audio('https://www.soundjay.com/button/beep-02.wav');
-        var hoverAudio4 = new Audio('https://www.soundjay.com/button/beep-03.wav');
+        var hoverSound = new Audio('https://www.soundjay.com/button/beep-06.wav');
+        var clickSound1 = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        var clickSound2 = new Audio('https://www.soundjay.com/button/beep-08b.wav');
+        var clickSound3 = new Audio('https://www.soundjay.com/button/beep-10.wav');
+        var clickSound4 = new Audio('https://www.soundjay.com/button/beep-09.wav');
 
-        function playHoverSound(sound) {
-            if (sound === 'soundHover1') {
-                hoverAudio1.play();
-            } else if (sound === 'soundHover2') {
-                hoverAudio2.play();
-            } else if (sound === 'soundHover3') {
-                hoverAudio3.play();
-            } else if (sound === 'soundHover4') {
-                hoverAudio4.play();
-            }
+        // Play hover sound
+        function playHoverSound() {
+            hoverSound.play();
         }
 
+        // Play click sound based on location
         function playClickSound(sound) {
             if (sound === 'sound1') {
-                audio1.play();
+                clickSound1.play();
             } else if (sound === 'sound2') {
-                audio2.play();
+                clickSound2.play();
             } else if (sound === 'sound3') {
-                audio3.play();
+                clickSound3.play();
             } else if (sound === 'sound4') {
-                audio4.play();
+                clickSound4.play();
             }
         }
 
