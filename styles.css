@@ -1,0 +1,194 @@
+:root {
+    --cosmic-primary: #0a0a2e;
+    --cosmic-secondary: #1a1a4a;
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00ff;
+    --particle-size: 6px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at center, var(--cosmic-primary), var(--cosmic-secondary));
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 2000px;
+    overflow: auto;
+    position: relative;
+}
+
+.quantum-particles {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.quantum-particles span {
+    position: absolute;
+    background: radial-gradient(circle, var(--neon-blue) 20%, transparent 70%);
+    width: var(--particle-size);
+    height: var(--particle-size);
+    border-radius: 50%;
+    animation: quantum-drift 20s infinite linear;
+    opacity: 0.3;
+}
+
+@keyframes quantum-drift {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(100vw, 100vh, 1000px) scale(3); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    transform-style: preserve-3d;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+    animation: hologram 3s infinite alternate;
+    margin-bottom: 5rem;
+}
+
+@keyframes hologram {
+    0% { transform: translateZ(50px) skew(0deg, 0deg); opacity: 1; }
+    100% { transform: translateZ(100px) skew(2deg, -1deg); opacity: 0.9; }
+}
+
+.panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    transform-style: preserve-3d;
+}
+
+.time-box {
+    position: relative;
+    background: rgba(20, 20, 50, 0.3);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
+}
+
+.time-box::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.time-box:hover {
+    transform: rotateX(10deg) rotateY(-10deg) translateZ(50px);
+    background: rgba(20, 20, 50, 0.6);
+    box-shadow: 0 0 100px rgba(0, 243, 255, 0.3);
+}
+
+.time-box:hover::before {
+    opacity: 1;
+}
+
+.time-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--x) var(--y), 
+              rgba(0, 243, 255, 0.2), transparent 40%);
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.time-box .flag {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+    transform: translateZ(50px);
+}
+
+.time-box h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #fff, #00f3ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    transform: translateZ(40px);
+}
+
+.time-box a {
+    font-size: 1.2rem;
+    color: var(--neon-blue);
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transform: translateZ(30px);
+}
+
+.time-box a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--neon-pink);
+    transition: width 0.4s;
+}
+
+.time-box a:hover::after {
+    width: 100%;
+}
+
+.time-box .time {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
+    transform: translateZ(60px);
+    display: block;
+    margin-top: 2rem;
+}
+
+.interactive-cursor {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s, opacity 0.3s;
+    z-index: 9999;
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .panel { grid-template-columns: 1fr; }
+    .time-box { transform: none !important; }
+}
