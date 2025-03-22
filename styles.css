@@ -4,13 +4,19 @@
     --neon-blue: #00f3ff;
     --neon-pink: #ff00ff;
     --particle-size: 6px;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     min-height: 100vh;
-    background: radial-gradient(circle at center, var(--cosmic-primary), var(--cosmic-secondary));
+    background: 
+        radial-gradient(circle at 50% 50%, var(--cosmic-primary), var(--cosmic-secondary)),
+        linear-gradient(45deg, rgba(0, 243, 255, 0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 0, 255, 0.05) 25%, transparent 25%);
+    background-size: 100% 100%, 60px 60px, 60px 60px;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -20,6 +26,36 @@ body {
     position: relative;
     flex-direction: column;
     padding: 20px;
+    cursor: none;
+}
+
+.neural-network {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 50px,
+            rgba(0, 243, 255, 0.05) 50px,
+            rgba(0, 243, 255, 0.05) 100px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 50px,
+            rgba(255, 0, 255, 0.05) 50px,
+            rgba(255, 0, 255, 0.05) 100px
+        );
+    animation: neural-move 20s linear infinite;
+}
+
+@keyframes neural-move {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
 }
 
 .quantum-particles {
@@ -27,7 +63,8 @@ body {
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
+    filter: blur(1px);
 }
 
 .quantum-particles span {
@@ -39,6 +76,7 @@ body {
     animation: quantum-drift 20s infinite linear;
     opacity: 0.3;
     transition: 0.4s all ease;
+    transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0));
 }
 
 @keyframes quantum-drift {
@@ -49,10 +87,11 @@ body {
 
 .container {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     transform-style: preserve-3d;
     width: 100%;
     animation: container-float 8s ease-in-out infinite;
+    filter: drop-shadow(0 0 50px rgba(0, 243, 255, 0.2));
 }
 
 @keyframes container-float {
@@ -61,24 +100,48 @@ body {
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 900;
     text-transform: uppercase;
     background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
     -webkit-background-clip: text;
     color: transparent;
-    text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
-    animation: hologram 3s infinite alternate, text-glitch 2s infinite;
+    text-shadow: 
+        0 0 30px rgba(0, 243, 255, 0.5),
+        0 0 60px rgba(255, 0, 255, 0.3);
+    animation: 
+        hologram 3s infinite alternate,
+        text-glitch 2s infinite,
+        hologram-reflection 5s infinite;
     margin-bottom: 2rem;
     text-align: center;
+    position: relative;
+    perspective: 1000px;
 }
 
-@keyframes text-glitch {
-    0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-    2% { clip-path: polygon(0 45%, 100% 45%, 100% 55%, 0 55%); }
-    4% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-    98% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+h1::before,
+h1::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    -webkit-background-clip: text;
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+    opacity: 0.3;
+    transform: translateZ(-50px);
+}
+
+h1::after {
+    clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
+    transform: translateZ(-30px);
+}
+
+@keyframes hologram-reflection {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 .panel {
@@ -91,6 +154,7 @@ h1 {
     box-sizing: border-box;
     flex-wrap: nowrap;
     transition: transform 0.4s;
+    position: relative;
 }
 
 .panel:hover {
@@ -106,11 +170,14 @@ h1 {
     border: 2px solid rgba(255, 255, 255, 0.1);
     transform-style: preserve-3d;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    cursor: pointer;
-    box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
+    cursor: none;
+    box-shadow: 
+        0 0 50px rgba(0, 243, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
     width: 22%;
     min-width: 250px;
     overflow: hidden;
+    transform: rotate3d(var(--rx, 0), var(--ry, 0), 0, calc(var(--distance, 0) * 1deg));
 }
 
 .time-box::before {
@@ -123,23 +190,23 @@ h1 {
     opacity: 0;
     transition: opacity 0.4s;
     animation: border-pulse 2s infinite;
-}
-
-@keyframes border-pulse {
-    0% { filter: hue-rotate(0deg) brightness(1); }
-    50% { filter: hue-rotate(45deg) brightness(1.5); }
-    100% { filter: hue-rotate(0deg) brightness(1); }
+    filter: hue-rotate(0deg);
 }
 
 .time-box:hover {
-    transform: rotateX(15deg) rotateY(-10deg) rotateZ(2deg) translateZ(80px);
+    transform: 
+        rotateX(calc(var(--ry) * 2deg)) 
+        rotateY(calc(var(--rx) * 2deg)) 
+        translateZ(100px);
     background: rgba(20, 20, 50, 0.6);
-    box-shadow: 0 0 100px rgba(0, 243, 255, 0.3);
+    box-shadow: 
+        0 0 100px rgba(0, 243, 255, 0.3),
+        inset 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
 .time-box:hover::after {
     opacity: 0.6;
-    transform: scale(1.2);
+    transform: scale(1.5);
 }
 
 .time-box::after {
@@ -160,12 +227,38 @@ h1 {
     font-size: 4rem;
     filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
     transform: translateZ(50px);
-    animation: icon-float 3s ease-in-out infinite;
+    animation: 
+        icon-float 3s ease-in-out infinite,
+        icon-glow 2s alternate infinite;
+    position: relative;
+    display: inline-block;
 }
 
-@keyframes icon-float {
-    0%, 100% { transform: translateZ(50px) translateY(0); }
-    50% { transform: translateZ(50px) translateY(-10px); }
+@keyframes icon-glow {
+    0% { 
+        filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+        opacity: 0.9;
+    }
+    100% { 
+        filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.7));
+        opacity: 1;
+    }
+}
+
+.time-box:hover .flag {
+    animation: 
+        icon-hover 1.5s ease infinite,
+        icon-glow 0.5s alternate infinite;
+}
+
+@keyframes icon-hover {
+    0%, 100% { 
+        transform: translateZ(50px) translateY(0) scale(1);
+    }
+    50% { 
+        transform: translateZ(50px) translateY(-15px) scale(1.2);
+        filter: drop-shadow(0 0 25px var(--neon-pink));
+    }
 }
 
 .time-box h2 {
@@ -178,21 +271,7 @@ h1 {
     color: transparent;
     transform: translateZ(40px);
     position: relative;
-}
-
-.time-box h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--neon-pink);
-    transition: width 0.4s;
-}
-
-.time-box:hover h2::after {
-    width: 100%;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
 }
 
 .time-box .time {
@@ -200,16 +279,35 @@ h1 {
     font-weight: 900;
     letter-spacing: 3px;
     color: #fff;
-    text-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
+    text-shadow: 
+        0 0 20px rgba(0, 243, 255, 0.7),
+        0 0 40px rgba(255, 0, 255, 0.5);
     transform: translateZ(60px);
     display: block;
     margin-top: 2rem;
-    animation: time-glow 2s infinite alternate;
+    animation: 
+        time-glow 2s infinite alternate,
+        number-jitter 0.1s infinite;
 }
 
-@keyframes time-glow {
-    from { text-shadow: 0 0 20px rgba(0, 243, 255, 0.7); }
-    to { text-shadow: 0 0 40px rgba(0, 243, 255, 1); }
+@keyframes number-jitter {
+    0% { transform: translateZ(60px) translateX(0); }
+    50% { transform: translateZ(60px) translateX(1px); }
+    100% { transform: translateZ(60px) translateX(0); }
+}
+
+.quantum-connection {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+    transform-origin: left center;
+    animation: connection-glow 2s infinite;
+    filter: blur(1px);
+}
+
+@keyframes connection-glow {
+    0%, 100% { opacity: 0.3; width: 0; }
+    50% { opacity: 1; width: 100%; }
 }
 
 .interactive-cursor {
@@ -222,12 +320,13 @@ h1 {
     mix-blend-mode: difference;
     transform: translate(-50%, -50%);
     transition: 
-        transform 0.3s, 
-        opacity 0.3s,
+        transform 0.3s,
         width 0.3s,
-        height 0.3s;
+        height 0.3s,
+        opacity 0.3s;
     z-index: 9999;
     backdrop-filter: invert(1);
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
 }
 
 .interactive-cursor::before {
@@ -240,9 +339,20 @@ h1 {
     animation: cursor-pulse 1.5s infinite;
 }
 
-@keyframes cursor-pulse {
-    0% { transform: scale(0.8); opacity: 0.5; }
-    100% { transform: scale(2.5); opacity: 0; }
+.interactive-cursor::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-25%, -25%);
+    animation: cursor-ripple 3s infinite;
+}
+
+@keyframes cursor-ripple {
+    from { transform: translate(-25%, -25%) scale(0.5); opacity: 1; }
+    to { transform: translate(-25%, -25%) scale(2); opacity: 0; }
 }
 
 @media (max-width: 768px) {
@@ -250,12 +360,30 @@ h1 {
     .panel {
         flex-direction: column;
         align-items: center;
-        justify-content: center;
     }
     .time-box {
         width: 90%;
-    }
-    .time-box:hover {
-        transform: rotateX(5deg) rotateY(-5deg) translateZ(30px);
+        transform: none !important;
     }
 }
+
+/* JavaScript necesario para efectos interactivos */
+document.addEventListener('mousemove', (e) => {
+    document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+    document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    
+    document.querySelectorAll('.time-box').forEach(box => {
+        const rect = box.getBoundingClientRect();
+        const centerX = rect.left + rect.width/2;
+        const centerY = rect.top + rect.height/2;
+        const deltaX = e.clientX - centerX;
+        const deltaY = e.clientY - centerY;
+        const distance = Math.sqrt(deltaX**2 + deltaY**2)/50;
+        
+        box.style.setProperty('--rx', deltaY/20);
+        box.style.setProperty('--ry', -deltaX/20);
+        box.style.setProperty('--distance', distance);
+        box.style.setProperty('--x', `${e.clientX - rect.left}px`);
+        box.style.setProperty('--y', `${e.clientY - rect.top}px`);
+    });
+});
