@@ -159,37 +159,37 @@
         <h1 class="animate__animated animate__fadeInUp">Horarios Operación</h1>
         <div class="panel">
             <!-- San José del Cabo -->
-            <div class="time-box" id="San-Jose-del-Cabo" onclick="playSound('sound1')">
+            <div class="time-box" id="San-Jose-del-Cabo" onmouseover="playHoverSound('soundHover1')" onclick="playClickSound('sound1')">
                 <div class="flag">🇲🇽</div>
                 <h2>San José del Cabo</h2>
-                <a href="https://time.is/San_José_del_Cabo" rel="nofollow">SJD</a>
+                <a href="https://time.is/San_José_del_Cabo" rel="nofollow" onclick="playClickSound('sound1')">SJD</a>
                 <span id="time_San_Jose_del_Cabo" class="time"></span>
                 <div class="sun-info" id="sun-San-Jose-del-Cabo"></div>
             </div>
 
             <!-- Puerto Vallarta -->
-            <div class="time-box" id="Puerto-Vallarta" onclick="playSound('sound2')">
+            <div class="time-box" id="Puerto-Vallarta" onmouseover="playHoverSound('soundHover2')" onclick="playClickSound('sound2')">
                 <div class="flag">🇲🇽</div>
                 <h2>Puerto Vallarta</h2>
-                <a href="https://time.is/Puerto_Vallarta" rel="nofollow">PVR</a>
+                <a href="https://time.is/Puerto_Vallarta" rel="nofollow" onclick="playClickSound('sound2')">PVR</a>
                 <span id="time_Puerto_Vallarta" class="time"></span>
                 <div class="sun-info" id="sun-Puerto-Vallarta"></div>
             </div>
 
             <!-- Punta Cana -->
-            <div class="time-box" id="Punta-Cana" onclick="playSound('sound3')">
+            <div class="time-box" id="Punta-Cana" onmouseover="playHoverSound('soundHover3')" onclick="playClickSound('sound3')">
                 <div class="flag">🇩🇴</div>
                 <h2>Punta Cana</h2>
-                <a href="https://time.is/Punta_Cana" rel="nofollow">PUJ</a>
+                <a href="https://time.is/Punta_Cana" rel="nofollow" onclick="playClickSound('sound3')">PUJ</a>
                 <span id="time_Punta_Cana" class="time"></span>
                 <div class="sun-info" id="sun-Punta-Cana"></div>
             </div>
 
             <!-- Cancún -->
-            <div class="time-box" id="Cancun" onclick="playSound('sound4')">
+            <div class="time-box" id="Cancun" onmouseover="playHoverSound('soundHover4')" onclick="playClickSound('sound4')">
                 <div class="flag">🇲🇽</div>
                 <h2>Cancún</h2>
-                <a href="https://time.is/Cancún" rel="nofollow">CUN</a>
+                <a href="https://time.is/Cancún" rel="nofollow" onclick="playClickSound('sound4')">CUN</a>
                 <span id="time_Cancun" class="time"></span>
                 <div class="sun-info" id="sun-Cancun"></div>
             </div>
@@ -203,8 +203,24 @@
         var audio2 = new Audio('https://www.soundjay.com/button/beep-08b.wav');
         var audio3 = new Audio('https://www.soundjay.com/button/beep-10.wav');
         var audio4 = new Audio('https://www.soundjay.com/button/beep-09.wav');
+        var hoverAudio1 = new Audio('https://www.soundjay.com/button/beep-01a.wav');
+        var hoverAudio2 = new Audio('https://www.soundjay.com/button/beep-01b.wav');
+        var hoverAudio3 = new Audio('https://www.soundjay.com/button/beep-02.wav');
+        var hoverAudio4 = new Audio('https://www.soundjay.com/button/beep-03.wav');
 
-        function playSound(sound) {
+        function playHoverSound(sound) {
+            if (sound === 'soundHover1') {
+                hoverAudio1.play();
+            } else if (sound === 'soundHover2') {
+                hoverAudio2.play();
+            } else if (sound === 'soundHover3') {
+                hoverAudio3.play();
+            } else if (sound === 'soundHover4') {
+                hoverAudio4.play();
+            }
+        }
+
+        function playClickSound(sound) {
             if (sound === 'sound1') {
                 audio1.play();
             } else if (sound === 'sound2') {
