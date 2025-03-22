@@ -18,6 +18,8 @@ body {
     perspective: 2000px;
     overflow: auto;
     position: relative;
+    flex-direction: column;
+    padding: 20px;
 }
 
 .quantum-particles {
@@ -48,10 +50,11 @@ body {
     position: relative;
     z-index: 2;
     transform-style: preserve-3d;
+    width: 100%;
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 900;
     text-transform: uppercase;
     background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
@@ -59,7 +62,8 @@ h1 {
     color: transparent;
     text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
     animation: hologram 3s infinite alternate;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 @keyframes hologram {
@@ -68,11 +72,14 @@ h1 {
 }
 
 .panel {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    justify-content: space-between; /* Esto garantiza que las tarjetas estén distribuidas en una fila */
     gap: 2rem;
     padding: 2rem;
     transform-style: preserve-3d;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: nowrap; /* Evita que las tarjetas se muevan a la siguiente línea */
 }
 
 .time-box {
@@ -86,6 +93,8 @@ h1 {
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     cursor: pointer;
     box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
+    width: 22%; /* Establece un ancho fijo para cada tarjeta */
+    min-width: 250px; /* Asegura que las tarjetas no sean más pequeñas que este tamaño */
 }
 
 .time-box::before {
@@ -189,6 +198,12 @@ h1 {
 
 @media (max-width: 768px) {
     h1 { font-size: 2.5rem; }
-    .panel { grid-template-columns: 1fr; }
-    .time-box { transform: none !important; }
+    .panel {
+        flex-direction: column; /* Cambia la dirección a columna en pantallas más pequeñas */
+        align-items: center; /* Centra las tarjetas */
+        justify-content: center;
+    }
+    .time-box {
+        width: 90%; /* Las tarjetas ocupan casi todo el ancho en pantallas más pequeñas */
+    }
 }
