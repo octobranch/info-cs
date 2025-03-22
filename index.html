@@ -1,10 +1,12 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Customer Service</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@2.4.0/dist/lottie-player.js" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -14,9 +16,12 @@
             color: #fff;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-top: 30px;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
         }
 
         .container {
@@ -47,8 +52,14 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             padding: 20px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .time-box {
@@ -57,15 +68,18 @@
             padding: 15px;
             width: 220px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease, filter 0.3s ease-in-out;
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            transform: scale(1);
+            filter: brightness(1);
         }
 
         .time-box:hover {
-            transform: translateY(-5px);
+            transform: scale(1.1);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.2);
         }
 
         .time-box::before {
@@ -81,12 +95,13 @@
         }
 
         .time-box .flag {
-            font-size: 30px;
+            font-size: 40px;
         }
 
         .time-box h2 {
-            font-size: 20px;
+            font-size: 22px;
             margin: 10px 0;
+            text-transform: uppercase;
         }
 
         .time-box a {
@@ -141,10 +156,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Horarios Operación</h1>
+        <h1 class="animate__animated animate__fadeInUp">Horarios Operación</h1>
         <div class="panel">
             <!-- San José del Cabo -->
-            <div class="time-box" id="San-Jose-del-Cabo">
+            <div class="time-box" id="San-Jose-del-Cabo" onclick="playSound('sound1')">
                 <div class="flag">🇲🇽</div>
                 <h2>San José del Cabo</h2>
                 <a href="https://time.is/San_José_del_Cabo" rel="nofollow">SJD</a>
@@ -153,7 +168,7 @@
             </div>
 
             <!-- Puerto Vallarta -->
-            <div class="time-box" id="Puerto-Vallarta">
+            <div class="time-box" id="Puerto-Vallarta" onclick="playSound('sound2')">
                 <div class="flag">🇲🇽</div>
                 <h2>Puerto Vallarta</h2>
                 <a href="https://time.is/Puerto_Vallarta" rel="nofollow">PVR</a>
@@ -162,7 +177,7 @@
             </div>
 
             <!-- Punta Cana -->
-            <div class="time-box" id="Punta-Cana">
+            <div class="time-box" id="Punta-Cana" onclick="playSound('sound3')">
                 <div class="flag">🇩🇴</div>
                 <h2>Punta Cana</h2>
                 <a href="https://time.is/Punta_Cana" rel="nofollow">PUJ</a>
@@ -171,7 +186,7 @@
             </div>
 
             <!-- Cancún -->
-            <div class="time-box" id="Cancun">
+            <div class="time-box" id="Cancun" onclick="playSound('sound4')">
                 <div class="flag">🇲🇽</div>
                 <h2>Cancún</h2>
                 <a href="https://time.is/Cancún" rel="nofollow">CUN</a>
@@ -183,6 +198,24 @@
 
     <script src="//widget.time.is/es.js"></script>
     <script>
+        // Sounds
+        var audio1 = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        var audio2 = new Audio('https://www.soundjay.com/button/beep-08b.wav');
+        var audio3 = new Audio('https://www.soundjay.com/button/beep-10.wav');
+        var audio4 = new Audio('https://www.soundjay.com/button/beep-09.wav');
+
+        function playSound(sound) {
+            if (sound === 'sound1') {
+                audio1.play();
+            } else if (sound === 'sound2') {
+                audio2.play();
+            } else if (sound === 'sound3') {
+                audio3.play();
+            } else if (sound === 'sound4') {
+                audio4.play();
+            }
+        }
+
         time_is_widget.init({
             time_San_Jose_del_Cabo: {
                 id: "San_José_del_Cabo_z155",
