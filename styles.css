@@ -38,6 +38,7 @@ body {
     border-radius: 50%;
     animation: quantum-drift 20s infinite linear;
     opacity: 0.3;
+    transition: 0.4s all ease;
 }
 
 @keyframes quantum-drift {
@@ -51,6 +52,12 @@ body {
     z-index: 2;
     transform-style: preserve-3d;
     width: 100%;
+    animation: container-float 8s ease-in-out infinite;
+}
+
+@keyframes container-float {
+    0%, 100% { transform: translateY(0) rotateZ(0.5deg); }
+    50% { transform: translateY(-20px) rotateZ(-0.5deg); }
 }
 
 h1 {
@@ -61,25 +68,33 @@ h1 {
     -webkit-background-clip: text;
     color: transparent;
     text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
-    animation: hologram 3s infinite alternate;
+    animation: hologram 3s infinite alternate, text-glitch 2s infinite;
     margin-bottom: 2rem;
     text-align: center;
 }
 
-@keyframes hologram {
-    0% { transform: translateZ(50px) skew(0deg, 0deg); opacity: 1; }
-    100% { transform: translateZ(100px) skew(2deg, -1deg); opacity: 0.9; }
+@keyframes text-glitch {
+    0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    2% { clip-path: polygon(0 45%, 100% 45%, 100% 55%, 0 55%); }
+    4% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    98% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
 }
 
 .panel {
     display: flex;
-    justify-content: space-between; /* Esto garantiza que las tarjetas estén distribuidas en una fila */
+    justify-content: space-between;
     gap: 2rem;
     padding: 2rem;
     transform-style: preserve-3d;
     width: 100%;
     box-sizing: border-box;
-    flex-wrap: nowrap; /* Evita que las tarjetas se muevan a la siguiente línea */
+    flex-wrap: nowrap;
+    transition: transform 0.4s;
+}
+
+.panel:hover {
+    transform: translateZ(50px);
 }
 
 .time-box {
@@ -93,8 +108,9 @@ h1 {
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     cursor: pointer;
     box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
-    width: 22%; /* Establece un ancho fijo para cada tarjeta */
-    min-width: 250px; /* Asegura que las tarjetas no sean más pequeñas que este tamaño */
+    width: 22%;
+    min-width: 250px;
+    overflow: hidden;
 }
 
 .time-box::before {
@@ -106,16 +122,24 @@ h1 {
     z-index: -1;
     opacity: 0;
     transition: opacity 0.4s;
+    animation: border-pulse 2s infinite;
+}
+
+@keyframes border-pulse {
+    0% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(45deg) brightness(1.5); }
+    100% { filter: hue-rotate(0deg) brightness(1); }
 }
 
 .time-box:hover {
-    transform: rotateX(10deg) rotateY(-10deg) translateZ(50px);
+    transform: rotateX(15deg) rotateY(-10deg) rotateZ(2deg) translateZ(80px);
     background: rgba(20, 20, 50, 0.6);
     box-shadow: 0 0 100px rgba(0, 243, 255, 0.3);
 }
 
-.time-box:hover::before {
-    opacity: 1;
+.time-box:hover::after {
+    opacity: 0.6;
+    transform: scale(1.2);
 }
 
 .time-box::after {
@@ -129,12 +153,19 @@ h1 {
               rgba(0, 243, 255, 0.2), transparent 40%);
     pointer-events: none;
     border-radius: inherit;
+    transition: all 0.4s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
 .time-box .flag {
     font-size: 4rem;
     filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
     transform: translateZ(50px);
+    animation: icon-float 3s ease-in-out infinite;
+}
+
+@keyframes icon-float {
+    0%, 100% { transform: translateZ(50px) translateY(0); }
+    50% { transform: translateZ(50px) translateY(-10px); }
 }
 
 .time-box h2 {
@@ -146,21 +177,13 @@ h1 {
     -webkit-background-clip: text;
     color: transparent;
     transform: translateZ(40px);
-}
-
-.time-box a {
-    font-size: 1.2rem;
-    color: var(--neon-blue);
-    text-decoration: none;
     position: relative;
-    display: inline-block;
-    transform: translateZ(30px);
 }
 
-.time-box a::after {
+.time-box h2::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -10px;
     left: 0;
     width: 0;
     height: 2px;
@@ -168,7 +191,7 @@ h1 {
     transition: width 0.4s;
 }
 
-.time-box a:hover::after {
+.time-box:hover h2::after {
     width: 100%;
 }
 
@@ -181,6 +204,12 @@ h1 {
     transform: translateZ(60px);
     display: block;
     margin-top: 2rem;
+    animation: time-glow 2s infinite alternate;
+}
+
+@keyframes time-glow {
+    from { text-shadow: 0 0 20px rgba(0, 243, 255, 0.7); }
+    to { text-shadow: 0 0 40px rgba(0, 243, 255, 1); }
 }
 
 .interactive-cursor {
@@ -192,18 +221,41 @@ h1 {
     pointer-events: none;
     mix-blend-mode: difference;
     transform: translate(-50%, -50%);
-    transition: transform 0.3s, opacity 0.3s;
+    transition: 
+        transform 0.3s, 
+        opacity 0.3s,
+        width 0.3s,
+        height 0.3s;
     z-index: 9999;
+    backdrop-filter: invert(1);
+}
+
+.interactive-cursor::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+    animation: cursor-pulse 1.5s infinite;
+}
+
+@keyframes cursor-pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
 
 @media (max-width: 768px) {
     h1 { font-size: 2.5rem; }
     .panel {
-        flex-direction: column; /* Cambia la dirección a columna en pantallas más pequeñas */
-        align-items: center; /* Centra las tarjetas */
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
     }
     .time-box {
-        width: 90%; /* Las tarjetas ocupan casi todo el ancho en pantallas más pequeñas */
+        width: 90%;
+    }
+    .time-box:hover {
+        transform: rotateX(5deg) rotateY(-5deg) translateZ(30px);
     }
 }
