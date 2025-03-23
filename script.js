@@ -57,22 +57,3 @@ document.addEventListener('mousemove', (e) => {
         box.style.setProperty('--y', `${y}px`);
     });
 });
-
-// Efectos de sonido
-const hoverSound = new Audio('https://assets.mixkit.co/active_preview/sfx/2681/2681-preview.mp3');
-const clickSound = new Audio('https://assets.mixkit.co/active_preview/sfx/2697/2697-preview.mp3');
-
-document.querySelectorAll('.time-box').forEach(box => {
-    box.addEventListener('mouseenter', () => {
-        hoverSound.currentTime = 0;
-        hoverSound.play();
-    });
-
-    box.addEventListener('click', () => {
-        clickSound.play();
-        box.style.transform = `rotateX(15deg) rotateY(-15deg) translateZ(70px)`;
-        setTimeout(() => {
-            box.style.transform = `rotateX(10deg) rotateY(-10deg) translateZ(50px)`;
-        }, 300);
-    });
-});
